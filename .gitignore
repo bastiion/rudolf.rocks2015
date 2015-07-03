@@ -73,3 +73,5 @@ modules/views/
 # --------------------
 *.swp
 /packages/core/articles/public/assets/uploads/*
+config/env/production.js
+config/env/all.js
