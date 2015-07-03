@@ -1,0 +1,22 @@
+<section data-ng-controller="ArticlesController" data-ng-init="find()">
+<div class="col-md-12">
+    <div id="map" class="map" />
+</div>
+    <div data-ng-if="selectedArticle" class="col-md-12">
+
+        <span>{{article.created | date:'medium'}}</span> /
+        <span>{{article.user.name}}</span>
+        <h2>
+            <a data-ng-href="/articles/{{article._id}}">{{article.title}}</a>
+        <span data-ng-if="hasAuthorization(article)">
+          <a class="btn" href="/articles/{{article._id}}/edit">
+              <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(article);">
+              <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+        </h2>
+        <div class="article-content" ng-bind-html="getContent(article)" />
+    </div>
+</section>

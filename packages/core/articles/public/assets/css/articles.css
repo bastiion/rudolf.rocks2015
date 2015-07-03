@@ -1,0 +1,10 @@
+h1 {
+	text-align: center
+}
+ul.articles li:not(:last-child) {
+	border-bottom: 1px solid #ccc
+}
+
+.article-content img {
+	max-width: 100%;
+}

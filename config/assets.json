@@ -1,0 +1,26 @@
+{
+  "core": {
+    "css": {
+      "bower_components/build/css/dist.min.css": [
+          "bower_components/openlayers3.5/build/ol.css",
+          "bower_components/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css"
+      ]
+    },
+    "js": {
+      "bower_components/build/js/dist.min.js": [
+        "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/angular/angular.min.js",
+        "bower_components/angular-mocks/angular-mocks.js",
+        "bower_components/angular-cookies/angular-cookies.min.js",
+        "bower_components/angular-resource/angular-resource.min.js",
+        "bower_components/angular-ui-router/release/angular-ui-router.min.js",
+        "bower_components/angular-jwt/dist/angular-jwt.min.js",
+        "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
+        "bower_components/web-bootstrap/index.js",
+        "bower_components/openlayers3.5/build/ol-debug.js",
+        "bower_components/bootstrap-markdown-editor/src/bootstrap-markdown-editor.js",
+        "bower_components/ace-builds/src-noconflict/ace.js"
+      ]
+    }
+  }
+}
