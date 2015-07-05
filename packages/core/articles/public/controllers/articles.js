@@ -22,6 +22,15 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
         var map;
         var rudolfstr = ol.proj.fromLonLat([13.73976, 51.07001]);
 
+        var stamenLayer = new ol.layer.Tile({
+            source: new ol.source.Stamen({
+                layer: 'toner'
+            })
+        });
+        var osmLayer = new ol.layer.Tile({
+            preload: 4,
+            source: new ol.source.OSM()
+        });
         $scope.toggle = function (_b) {
             _b = !_b;
             return _b;
@@ -357,11 +366,8 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
         function initMap() {
 
             map = new ol.Map({
-                layers: [
-                    new ol.layer.Tile({
-                        preload: 4,
-                        source: new ol.source.OSM()
-                    })
+                layers: [ stamenLayer
+
                     //,featureOverlay
                 ],
                 target: 'map',
