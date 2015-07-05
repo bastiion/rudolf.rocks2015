@@ -18,10 +18,12 @@ module.exports = function(Articles) {
      */
     //Group.collection.remove();
     Group.collection.insert([
-        { name: 'Spiel-&Spaß', description: 'Aktionen und Stände mit spielerischem Kontext für Kinder und Erwachsene'},
-        { name: 'Getränke', description: 'Getränkestände, Kontakt zu Getränkehändlern, Ausschank'},
-        { name: 'Essen-&Trinken', description: 'Verköstigung und Kulinarisches mit Fokus auf kaubaren Lebensmittel'},
-        { name: 'Musik-&Bühne', description: 'Bühnenaufbau, -technik und -management, Bands, Musiker, Acts'}
+        { short: 'service', name: 'Dienstleistung', description: 'Stand der einen immateriellen Service gegen Spende anbietet.'},
+        { short: 'stand', name: 'Stand', description: 'Stand der irgend etwas gegen Spende anbietet.'},
+        { short: 'game', name: 'Spiel-&Spaß', description: 'Aktionen und Stände mit spielerischem Kontext für Kinder und Erwachsene'},
+        { short: 'drink', name: 'Getränke', description: 'Getränkestände, Kontakt zu Getränkehändlern, Ausschank'},
+        { short: 'food', name: 'Essen', description: 'Verköstigung und Kulinarisches mit Fokus auf kaubaren Lebensmittel'},
+        { short: 'music', name: 'Musik-&Bühne', description: 'Bühnenaufbau, -technik und -management, Bands, Musiker, Acts'}
     ]);
     function renderMarkdown(content) {
         return marked(content);

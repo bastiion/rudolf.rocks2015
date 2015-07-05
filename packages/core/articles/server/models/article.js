@@ -12,6 +12,11 @@ var mongoose = require('mongoose'),
  */
 
 var GroupSchema = new Schema({
+  short: {
+    type: String,
+    required: true,
+    unique: true
+  },
   name: {
     type: String,
     required: true,

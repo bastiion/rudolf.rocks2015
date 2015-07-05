@@ -2,8 +2,8 @@
 
 // Article authorization helpers
 var hasAuthorization = function(req, res, next) {
-  if (!req.user.isAdmin && !req.article.user._id.equals(req.user._id)) {
-    return res.status(401).send('User is not authorized');
+  if (req.user.roles.indexOf('admin') === -1 && !req.article.user._id.equals(req.user._id)) {
+    return res.status(401).send('User is not authorized '+ req.user.roles);
   }
   next();
 };

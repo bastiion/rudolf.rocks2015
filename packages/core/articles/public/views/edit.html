@@ -1,37 +1,60 @@
-<section data-ng-controller="ArticlesController" data-ng-init="findOne()">
-  <form name="articleForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(articleForm.$valid)" novalidate>
-    <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.title.$invalid }">
-      <label mean-token="'edit-title'" for="title" class="col-md-2 control-label">Title</label>
-      <div class="col-md-10">
-        <input name="title" type="text" class="form-control" data-ng-model="article.title" id="title" placeholder="Title" required>
-        <div ng-show="submitted && articleForm.title.$invalid" class="help-block">
-          <p ng-show="articleForm.title.$error.required">Title is required</p>
+<section data-ng-controller="ArticlesController" data-ng-init="initEdit()">
+    <form name="articleForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(articleForm.$valid)" novalidate >
+        <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.title.$invalid }">
+            <label mean-token="'edit-title'" for="title" class="col-md-2 control-label">Title</label>
+            <div class="col-md-10">
+                <input name="title" type="text" class="form-control" data-ng-model="article.title" id="title" placeholder="Title" required>
+                <div ng-show="submitted && articleForm.title.$invalid" class="help-block">
+                    <p ng-show="articleForm.title.$error.required">Title is required</p>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="form-group">
+            <label mean-token="'edit-tag'" for="tags" class="col-md-2 control-label">Tags</label>
+            <div class="col-md-10">
+                <select name="tags-input" id="tags" multiple data-role="tagsinput"  ng-model="article.tags" >
+                  <!--  <option ng-repeat="tag in article.tags" value="{{tag}}" selected="selected">{{tag}}</option>-->
+                </select>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.content.$invalid }">
+            <label mean-token="'edit-content'" for="content" class="col-md-2 control-label">Inhalt<br>
+                erweiterte Editierung: <input type="checkbox" ng-model="markdownEdit" ng-init="markdownEdit=false"  />
+            </label>
+            <div ng-if="!markdownEdit" class="col-md-10">
+                <textarea name="content" data-ng-model="article.content" id="content" cols="30" rows="10" placeholder="Content" class="form-control" required></textarea>
+                <div ng-show="submitted && articleForm.content.$invalid" class="help-block">
+                    <p ng-show="articleForm.content.$error.required">Content is required</p>
+                </div>
+            </div>
+            <div class="col-md-10 md-editor" id="markdown-editor" style="{{markdownEdit ? '' : 'display: none'}}" ng-init="markdown()"></div>
+        </div>
+        <div class="form-group" >
+            <label mean-token="'create-group'"  class="col-md-3 control-label">Arbeitsgruppe</label>
+            <div class="col-md-9">
+                {{article.group.name}}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" ng-class="{'active': editTool == 'select'}" ng-click="setEditTool('select')"><i class="fa fa-hand-o-up" /></button>
+                        <button type="button" class="btn btn-default"  ng-class="{'active': editTool == 'polygon'}" ng-click="setEditTool('polygon')"><i class="fa fa-pencil" /></button>
+                        <button type="button" class="btn btn-default"  ng-class="{'active': editTool == 'marker'}" ng-click="setEditTool('marker')"><i class="fa fa-map-marker" /></button>
+                        <button type="button" class="btn btn-default pull-right" ng-click="deleteFeature()"><i class="fa fa-trash" /></button>
 
-    </div>
-    <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.content.$invalid }">
-      <label mean-token="'edit-content'" for="content" class="col-md-2 control-label">Content<br>
-        erweiterte Editierung: <input type="checkbox" ng-model="markdownEdit" ng-init="markdownEdit=false"  />
-      </label>
-      <div ng-if="!markdownEdit" class="col-md-10">
-        <textarea name="content" data-ng-model="article.content" id="content" cols="30" rows="10" placeholder="Content" class="form-control" required></textarea>
-        <div ng-show="submitted && articleForm.content.$invalid" class="help-block">
-          <p ng-show="articleForm.content.$error.required">Content is required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="map" class="map"></div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-10 md-editor" id="markdown-editor" style="{{markdownEdit ? '' : 'display: none'}}" ng-init="markdown()"></div>
-    </div>
-      <div class="form-group" >
-          <label mean-token="'create-group'"  class="col-md-3 control-label">Working Group</label>
-          <div class="col-md-9">
-             {{article.group.name}}
-          </div>
-      </div>
-    <div class="form-group">
-      <div class="col-md-offset-2 col-md-10">
-        <button mean-token="'edit-submit'" type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </div>
-  </form>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button mean-token="'edit-submit'" type="submit" class="btn btn-default">abschicken</button>
+            </div>
+        </div>
+    </form>
 </section>

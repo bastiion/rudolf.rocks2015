@@ -5,13 +5,23 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
         $scope.global = Global;
         $scope.group = 0;
         $scope.markdownEdit = false;
+        $scope.editTool = 'select';
         $scope.article = {
             title: '',
             group: 0,
-            content: ''
+            content: '',
+            tags: [],
+            contentRendered: ''
         };
-        var featureOverlay;
+        $scope.selectedArticle = false;
+        $scope.features = new ol.Collection();
+        var featureOverlay, drawInteraction, modifyInteraction, selectInteraction;
+        var highlightFeature = null;
+        var selectedFeature = null;
+        var geofeatures = [];
         var map;
+        var rudolfstr = ol.proj.fromLonLat([13.73976, 51.07001]);
+
         $scope.toggle = function (_b) {
             _b = !_b;
             return _b;
@@ -56,9 +66,9 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             if (!article || !article.user) return false;
             return MeanUser.isAdmin || article.user._id === MeanUser.user._id;
         };
-        var geofeatures = [];
         $scope.create = function (isValid) {
             if (isValid) {
+                updateGeometryFeatures();
                 var article = new Articles({
                     title: this.article.title,
                     content: this.article.content,
@@ -95,7 +105,11 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
 
         $scope.update = function (isValid) {
             if (isValid) {
+                updateGeometryFeatures();
+                $scope.article.geofeatures = geofeatures;
                 var article = $scope.article;
+                console.log(article);
+
                 if (!article.updated) {
                     article.updated = [];
                 }
@@ -109,12 +123,19 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             }
         };
 
-        $scope.find = function () {
+        $scope.mapFind = function() {
             Articles.query(function (articles) {
                 $scope.articles = articles;
                 initFeatures();
             });
             initMap();
+            enableSelectMod();
+        };
+
+        $scope.find = function () {
+            Articles.query(function (articles) {
+                $scope.articles = articles;
+            });
         };
         $scope.getContent = function(article) {
           if(!angular.isUndefined(article.contentRendered))  {
@@ -124,12 +145,24 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
           }
         };
 
-        $scope.findOne = function () {
+        var initControls = function() {
+            var t = $('#tags'),
+                tags = $scope.article.tags;
+            t.tagsinput();
+
+            for(var i in tags) {
+                try {
+                    t.tagsinput('add', tags[i]);
+                } catch(e) {
+                    console.log("Error at tag " + tag[i]);
+                }
+            }
+        };
+        $scope.initView= function () {
             Articles.get({
                 articleId: $stateParams.articleId
             }, function (article) {
                 $scope.article = article;
-                $scope.article.contentRendered = '';
                 $http({
                     url: '/api/markdown',
                     method: 'POST',
@@ -138,52 +171,107 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
                         content: $scope.article.content
                     }
                 }).success(function(result)  {
-                    $scope.contentRendered = $sce.trustAsHtml(result);
+                    $scope.article.contentRendered = $sce.trustAsHtml(result);
                     //$scope.$apply();
                 });
+            });
+        };
+
+        $scope.initEdit = function () {
+            initMap();
+            modifyMap();
+            Articles.get({
+                articleId: $stateParams.articleId
+            }, function (article) {
+                $scope.article = article;
+                $http({
+                    url: '/api/markdown',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        content: $scope.article.content
+                    }
+                }).success(function(result)  {
+                    $scope.article.contentRendered = $sce.trustAsHtml(result);
+                    //$scope.$apply();
+                });
+                makeFeatures($scope.article.geofeatures, $scope.article);
+                //mapEvents();
+                initControls();
 
             });
         };
-        $scope.features = new ol.Collection();
-        $scope.findGroups = function () {
+        $scope.initCreate = function () {
             Groups.query(
                 function (groups) {
                     $scope.groups = groups;
                 }
             );
+            initControls();
             initMap();
             modifyMap();
         };
         function initFeatures() {
             for (var i in $scope.articles) {
                 var geofeats = $scope.articles[i].geofeatures;
-                for (var j in geofeats) {
-                    console.log(geofeats[j][0]);
-                    if (geofeats[j][0].length > 1) {
-                        console.log('make Polygon');
-                        var feature = new ol.Feature({
-                            geometry: new ol.geom.Polygon(geofeats[j]),
-                            name: $scope.articles[i].title,
-                            article: $scope.articles[i]
-                        });
-                        $scope.features.push(feature);
-                    }
-                }
+                makeFeatures(geofeats, $scope.articles[i]);
+
             }
+            mapEvents();
+        }
+        function mapEvents() {
             map.on('pointermove', function (evt) {
                 if (evt.dragging) {
                     return;
                 }
                 highlight(map.getEventPixel(evt.originalEvent));
             });
-            map.on('click', function (evt) {
+            /*map.on('click', function (evt) {
                 displayInfo(map.getEventPixel(evt.originalEvent));
-            });
+            });*/
         }
 
-        var highlightFeature = null;
-        var selectedFeature = null;
-        $scope.selectedArticle = false;
+        function enableSelectMod() {
+            selectInteraction = new ol.interaction.Select({
+                layers: [featureOverlay],
+                style: click_style,
+                multi: false
+            });
+            selectInteraction.getFeatures().on('add', function(event) {
+                selectedFeature = event.target.item(0);
+                $scope.article = selectedFeature.getProperties().article;
+                $scope.selectedArticle = true;
+                console.log($scope.selectedArticle);
+                $scope.$apply();
+            });
+            map.addInteraction(selectInteraction);
+        }
+
+        function makeFeatures(geofeats, article) {
+            for (var j in geofeats) {
+                console.log(geofeats[j][0]);
+                if (geofeats[j][0].length > 1) {
+                    console.log('make Polygon');
+                    var feature = new ol.Feature({
+                        geometry: new ol.geom.Polygon(geofeats[j]),
+                        name: article.title,
+                        article: article
+                    });
+                    $scope.features.push(feature);
+                } else if(geofeats[j].length == 2) {
+                    console.log('make Marker');
+                    var feature = new ol.Feature({
+                        geometry: new ol.geom.Point(geofeats[j]),
+                        name: article.title,
+                        article: article
+                    });
+                    feature.setStyle(iconStyle)
+                    $scope.features.push(feature);
+                }
+            }
+        }
+
+
         var normal_style = new ol.style.Style({
             fill: new ol.style.Fill({
                 color: 'rgba(255, 255, 255, 0.3)'
@@ -200,62 +288,73 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             })
         });
 
-        function displayInfo(pixel) {
-            var click_style = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 255, 0.5)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ff0033',
-                    width: 3
-                })
-            });
-            var feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-                return feature;
-            });
-            if (selectedFeature) {
-                selectedFeature.setStyle(normal_style);
-                selectedFeature = null;
-                $scope.selectedArticle = false;
-            }
-            if (feature) {
-                selectedFeature = feature;
-                feature.setStyle(click_style);
-                $scope.article = feature.getProperties().article;
-                $scope.selectedArticle = true;
-                console.log($scope.selectedArticle);
-                $scope.$apply();
-            }
+        var highlight_style = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 255, 0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ff0033',
+                width: 2
+            })
+        });
+
+        var click_style = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 255, 0.5)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ff0033',
+                width: 3
+            })
+        });
 
 
-        }
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 52],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                opacity: 0.75,
+                src: '/articles/assets/img/maps-pointer-star.png'
+
+            })
+        });
+
+        $scope.setEditTool = function(tool) {
+            $scope.editTool = tool;
+            modifyMap();
+        };
+
+        $scope.deleteFeature = function() {
+            if(selectedFeature !== null) {
+                featureOverlay.removeFeature(selectedFeature);
+            }
+            selectInteraction.getFeatures().remove(selectedFeature);
+            selectedFeature = null;
+        };
+
+
 
         function highlight(pixel) {
-            var highlight_style = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 255, 0.2)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ff0033',
-                    width: 2
-                })
-            });
 
             var feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
                 return feature;
             });
             if (highlightFeature) {
-                highlightFeature.setStyle(normal_style);
+                if(angular.isDefined(highlightFeature.normalStyle))
+                    highlightFeature.setStyle(highlightFeature.normalStyle);
+                else
+                    highlightFeature.setStyle(normal_style);
                 highlightFeature = null;
             }
-            if (feature) {
+            if (feature && feature.getGeometry().getType()  !== 'Point') {
                 highlightFeature = feature;
+                feature.normalStyle = feature.getStyle();
                 feature.setStyle(highlight_style);
             }
         }
 
         function initMap() {
-            var rudolfstr = ol.proj.fromLonLat([13.73976, 51.07001]);
 
             map = new ol.Map({
                 layers: [
@@ -274,29 +373,25 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             featureOverlay = new ol.FeatureOverlay({
                 //source: new ol.source.Vector({features: $scope.features}),
                 //map: map,
-                style: new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 255, 255, 0.3)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 7,
-                        fill: new ol.style.Fill({
-                            color: '#ffcc33'
-                        })
-                    })
-                })
+                style: normal_style
             });
+
             $scope.features = featureOverlay.getFeatures();
             featureOverlay.setMap(map);
+
         }
+
+
+
 
         function modifyMap() {
             //map.addLayer(featureOverlay);
-            var modify = new ol.interaction.Modify({
+            //map.on('keydown', function(event) {
+            //   console.log(event);
+            //});
+            if(modifyInteraction !== null) map.removeInteraction(modifyInteraction);
+            if(drawInteraction !== null) map.removeInteraction(drawInteraction);
+            modifyInteraction = new ol.interaction.Modify({
                 features: featureOverlay.getFeatures(),
                 // the SHIFT key must be pressed to delete vertices, so
                 // that new vertices can be drawn at the same position
@@ -306,20 +401,42 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
                         ol.events.condition.singleClick(event);
                 }
             });
-            map.addInteraction(modify);
-            var draw = new ol.interaction.Draw({
-                features: featureOverlay.getFeatures(),
-                type: 'Polygon'
+            map.addInteraction(modifyInteraction);
+            selectInteraction = new ol.interaction.Select({
+                layers: [featureOverlay],
+                style: click_style,
+                multi: false
             });
-            draw.on('drawend', function (event) {
+            selectInteraction.getFeatures().on('add', function(event) {
+               selectedFeature = event.target.item(0);
+            });
+            map.addInteraction(selectInteraction);
+
+            var drawType = 'select';
+            if($scope.editTool == 'polygon') drawType = 'Polygon';
+            else if($scope.editTool == 'marker') drawType = 'Point';
+            if(drawType == 'select') return;
+            drawInteraction = new ol.interaction.Draw({
+                features: featureOverlay.getFeatures(),
+                type: drawType
+            });
+            drawInteraction.on('drawend', function (event) {
                 console.log(event);
                 console.log($scope.features.getArray());
-                var f = event.feature.getGeometry();
-                geofeatures.push(f.getCoordinates());
+                if(drawType == 'Point') {
+                    event.feature.setStyle(iconStyle);
+                }
 
-                console.log(geofeatures);
             });
-            map.addInteraction(draw);
+            map.addInteraction(drawInteraction);
+        }
+
+        function updateGeometryFeatures() {
+            geofeatures = [];
+            $scope.features.forEach(function(feat) {
+                geofeatures.push(feat.getGeometry().getCoordinates());
+            });
+            console.log(geofeatures);
         }
     }
 ]);
