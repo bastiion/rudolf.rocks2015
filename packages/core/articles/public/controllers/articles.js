@@ -11,7 +11,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             group: 0,
             content: '',
             tags: [],
-            contentRendered: ''
+            contentRendered: $sce.trustAsHtml('')
         };
         $scope.selectedArticle = false;
         $scope.features = new ol.Collection();
