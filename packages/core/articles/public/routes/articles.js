@@ -16,7 +16,7 @@ angular.module('mean.articles').config(['$stateProvider',
         }
       })
         .state('show map', {
-          url: '/article/map',
+          url: '/article/map/:displayMarker?',
           templateUrl: '/articles/views/map.html',
           resolve: {
             loggedin: function(MeanUser) {

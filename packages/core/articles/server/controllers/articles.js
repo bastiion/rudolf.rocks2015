@@ -123,7 +123,7 @@ module.exports = function(Articles) {
         * List of Articles
         */
         all: function(req, res) {
-            Article.find().sort('-created').populate('user', 'name username').populate('group', 'name').exec(function(err, articles) {
+            Article.find().sort('-created').populate('user', 'name username').populate('group', 'short name').exec(function(err, articles) {
                 if (err) {
                     return res.status(500).json({
                         error: 'Cannot list the articles'

@@ -15,6 +15,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
         };
         $scope.selectedArticle = false;
         $scope.features = new ol.Collection();
+        $scope.displayMarker = false;//$routeParams.displayMarker !== "false";
         var featureOverlay, drawInteraction, modifyInteraction, selectInteraction;
         var highlightFeature = null;
         var selectedFeature = null;
@@ -187,6 +188,11 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
         };
 
         $scope.initEdit = function () {
+            Groups.query(
+                function (groups) {
+                    $scope.groups = groups;
+                }
+            );
             initMap();
             modifyMap();
             Articles.get({
@@ -256,6 +262,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             map.addInteraction(selectInteraction);
         }
 
+
         function makeFeatures(geofeats, article) {
             for (var j in geofeats) {
                 console.log(geofeats[j][0]);
@@ -266,8 +273,22 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
                         name: article.title,
                         article: article
                     });
+                    if(article.group !== null) {
+                        var col = groupColor[article.group.short];
+                        console.log(article.group);
+                        if (angular.isDefined(col)) {
+                            console.log("setSTyle...");
+                            feature.setStyle(new ol.style.Style({
+                                    fill: col,
+                                    stroke: new ol.style.Stroke({
+                                        color: '#ffcc33',
+                                        width: 2
+                                    })
+                                }));
+                        }
+                    }
                     $scope.features.push(feature);
-                } else if(geofeats[j].length == 2) {
+                } else if($scope.displayMarker && geofeats[j].length == 2) {
                     console.log('make Marker');
                     var feature = new ol.Feature({
                         geometry: new ol.geom.Point(geofeats[j]),
@@ -280,7 +301,16 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
             }
         }
 
-
+        var blue = new ol.style.Fill({color: 'rgba(0 , 0 , 255, 0.2)'}),
+            green = new ol.style.Fill({color: 'rgba(0 , 255 , 0, 0.2)'}),
+            red = new ol.style.Fill({color: 'rgba(255 , 0 , 0, 0.2)'}),
+            magenta = new ol.style.Fill({color: 'rgba(128 , 54 , 224, 0.2)'});
+        var groupColor = {
+            'music': magenta,
+            'food': red,
+            'drink': blue,
+            'game': green
+        };
         var normal_style = new ol.style.Style({
             fill: new ol.style.Fill({
                 color: 'rgba(255, 255, 255, 0.3)'

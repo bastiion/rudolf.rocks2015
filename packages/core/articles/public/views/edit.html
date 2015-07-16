@@ -30,9 +30,11 @@
             <div class="col-md-10 md-editor" id="markdown-editor" style="{{markdownEdit ? '' : 'display: none'}}" ng-init="markdown()"></div>
         </div>
         <div class="form-group" >
-            <label mean-token="'create-group'"  class="col-md-3 control-label">Arbeitsgruppe</label>
+            <label mean-token="'create-group'" for="group" class="col-md-3 control-label">Arbeitsgruppe</label>
             <div class="col-md-9">
-                {{article.group.name}}
+                <select data-ng-model="article.group" class="form-control" bs-selectbox id="group">
+                    <option data-ng-repeat="grp in groups" value="{{grp._id}}">{{grp.name}}</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
