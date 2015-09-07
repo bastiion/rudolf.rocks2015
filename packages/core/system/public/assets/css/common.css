@@ -51,3 +51,79 @@ footer p {
 /*.ng-valid.ng-dirty{*/
     /*border-color:#78FA89;*/
 /*}*/
+
+body, html {
+    min-height: 100%;
+}
+
+.main-page {
+    min-height: 2000px;
+}
+
+.background-div {
+    position: absolute;
+    z-index: 10;
+    top:0;
+    left:0;
+    width:1820px;
+    height:4252px;
+}
+
+#background-base {
+    z-index: 9;
+    background:url(/theme/assets/img/rudolf_rocks_background.jpg) no-repeat 0 0;
+}
+#background-front {
+    background:url(/theme/assets/img/rudolf_rocks_background_birds2.png) repeat-y 0 0;
+}
+#background-middle {
+    z-index: 10;
+    background:url(/theme/assets/img/rudolf_rocks_background_birds.png) repeat-y 0 0;
+}
+
+#top-header {
+    position:fixed;
+    top:0;
+    left:0;
+    width:1820px;
+    height:1622px;
+    z-index: 11;
+    background:url(/theme/assets/img/rudolf_rocks_background_top.png) no-repeat 0 0;
+}
+
+#content {
+    z-index: 15;
+    position: absolute;
+    top: 250px;
+    left: 0;
+    width: 1820px;
+    height: 4000px;
+    color: #FFFFFF;
+
+}
+
+.subcontent {
+    background-size: auto;
+    background-repeat: no-repeat;
+}
+
+.subcontent img {
+    margin: 0;
+}
+.subcontent p {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+#top-border {
+    position:fixed;
+    top:30;
+    left:0;
+    width:1820px;
+    height:262px;
+    z-index: 12;
+    color: #FFFFFF;
+    font-size: 36pt;
+    background-size: auto;
+/*    background:url(/theme/assets/img/rudolf_rocks_top_top_header.png) no-repeat 0 0;*/
+}

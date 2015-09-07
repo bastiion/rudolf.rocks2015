@@ -23,8 +23,8 @@
         "bower_components/bootstrap-markdown-editor/src/bootstrap-markdown-editor.js",
         "bower_components/ace-builds/src-noconflict/ace.js",
         "bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.js",
-        "bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"
-
+        "bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
+        "bower_components/skrollr/src/skrollr.js"
       ]
     }
   }
