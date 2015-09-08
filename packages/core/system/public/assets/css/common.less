@@ -52,6 +52,8 @@ footer p {
     /*border-color:#78FA89;*/
 /*}*/
 
+@page-widthpx: 1820px;
+
 body, html {
     min-height: 100%;
 }
@@ -65,15 +67,16 @@ body, html {
     z-index: 10;
     top:0;
     left:0;
-    width:1820px;
+    width:@page-widthpx;
     height:4252px;
 }
 
 #background-base {
-    z-index: 9;
+    z-index: 8;
     background:url(/theme/assets/img/rudolf_rocks_background.jpg) no-repeat 0 0;
 }
 #background-front {
+    z-index: 9;
     background:url(/theme/assets/img/rudolf_rocks_background_birds2.png) repeat-y 0 0;
 }
 #background-middle {
@@ -82,10 +85,11 @@ body, html {
 }
 
 #top-header {
+    opacity: 0.7;
     position:fixed;
     top:0;
     left:0;
-    width:1820px;
+    width:@page-widthpx;
     height:1622px;
     z-index: 11;
     background:url(/theme/assets/img/rudolf_rocks_background_top.png) no-repeat 0 0;
@@ -96,34 +100,49 @@ body, html {
     position: absolute;
     top: 250px;
     left: 0;
-    width: 1820px;
+    width: @page-widthpx;
     height: 4000px;
     color: #FFFFFF;
 
 }
 
+#nav-section {
+    z-index: 20;
+    position: absolute;
+    top: 400px;
+    left: 1000px;
+    color: #FFFFFF;
+}
+
 .subcontent {
     background-size: auto;
     background-repeat: no-repeat;
+    font-size: 24pt;
 }
 
-.subcontent img {
+.subcontent > img {
     margin: 0;
 }
-.subcontent p {
-    margin-left: 200px;
-    margin-right: 200px;
+
+.subcontent > * {
+        margin-left: 300px;
+        margin-right: 300px;
 }
 
-#top-border {
-    position:fixed;
-    top:30;
-    left:0;
-    width:1820px;
-    height:262px;
-    z-index: 12;
-    color: #FFFFFF;
-    font-size: 36pt;
-    background-size: auto;
-/*    background:url(/theme/assets/img/rudolf_rocks_top_top_header.png) no-repeat 0 0;*/
-}
+    #welcome img {
+        margin-left: 100px;
+        margin-bottom: 50px;
+    }
+
+    #top-border {
+        position:fixed;
+        top:30;
+        left:0;
+        width:@page-widthpx;
+        height:262px;
+        z-index: 12;
+        color: #FFFFFF;
+        font-size: 36pt;
+        background-size: auto;
+        /*    background:url(/theme/assets/img/rudolf_rocks_top_top_header.png) no-repeat 0 0;*/
+    }

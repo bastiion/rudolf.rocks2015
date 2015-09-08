@@ -1,14 +1,47 @@
 <section class="main-page"data-ng-controller="IndexController" data-ng-init="initScroller()">
-    <div class="background-div" id="background-base" data-0="background-position:0px 0px;" data-end="background-position:0px -2000px;" >asdas</div>
-    <div class="background-div" id="background-middle" data-0="background-position:0px 0px;" data-end="background-position:0px -1000px;" >asdas</div>
-    <div class="background-div" id="background-front" data-0="background-position:0px 0px;" data-end="background-position:-1000px -4000px;" >asdsad</div>
+    <div class="background-div" id="background-base" data-0="background-position:0px 0px;" data-end="background-position:0px -1000px;" ></div>
+    <div class="background-div" id="background-middle" data-0="background-position:0px 0px;" data-end="background-position:0px -2000px;" ></div>
+    <div class="background-div" id="background-front" data-0="background-position:0px 0px;" data-end="background-position:-1000px -4000px;" ></div>
 
     <div id="top-header" data-0="top: 0px;" data-500="top: -500px;">Rudolf.Rocks</div>
     <div id="top-border">Street Festival 19. September 2015 Dresden</div>
+    <section id="nav-section" data-0="top:400px" data-350="top:50px;position:fixed;">
+    <div>
+        <div class="row" >
+            <!--<div class="col-md-6">-->
+
+            <!--</div>-->
+            <div class="col-md-12">
+                <ul class="nav nav-pills">
+                    <li role="presentation"><a href="#welcome">
+                        <img src="/theme/assets/img/icons/home.png" />
+                        <div>home</div>
+                    </a></li>
+                    <li role="presentation"><a href="#program">
+                        <img src="/theme/assets/img/icons/clock.png" />
+                        <div>programm</div>
+                    </a></li>
+                    <li role="presentation"><a href="#workshops">
+                        <img src="/theme/assets/img/icons/pencil.png" />
+                        <div>workshops</div>
+                    </a></li>
+                    <li role="presentation"><a href="#organisation">
+                        <img src="/theme/assets/img/icons/workshop.png" />
+                        <div>organisaton</div>
+                    </a></li>
+                    <li role="presentation"><a href="#locations">
+                        <img src="/theme/assets/img/icons/location.png" />
+                        <div>locations</div>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </section>
     <section id="content">
-        <section  data-center="opacity: 1"
-                  data-106-top="opacity: 0"
-                  data-anchor-target="#welcome p"
+        <section  data-100-top="opacity: 1"
+                  data--100-top="opacity: 0"
+                  data-anchor-target="#welcome-end"
                   id="welcome" class="subcontent">
             <img src="/theme/assets/img/rudolf_rocks_logo.png" />
             <p>
@@ -19,20 +52,13 @@
 
                 Das Rudolfstraßenfest wird ausgerichtet vom Milan e.V., organisiert wird es
                 jedoch von vielen Freiwilligen und Engagierten um gemeinsam ein buntes Fest
-                auf die Beine zu stellen. Es befindet sich zur Zeit in aktiver Planung und es
-                werden noch immer Helfer*innen gesucht in verschiedenen Bereichen.
-                Jede*r sei herzlich eingeladen sich an unseren regelmäßigen Treffen zu beteiligen,
-                die zunächst jeden zweiten Mittwoch ab 19:30 Uhr auf dem Sonnendeck der
-                Ottoterasse stattfinden.
-
+                auf die Beine zu stellen.
             </p>
+            <div id="welcome-end" />
         </section>
         <section
                 id="program" class="subcontent">
             <img src="/theme/assets/img/rudolf_rocks_program.png" />
-            <p>
-                Test
-            </p>
         </section>
         <section
                 id="workshops" class="subcontent">
@@ -42,20 +68,28 @@
                 Test
             </p>
         </section>
-        <section
-
-                id="organisation" class="subcontent">
-
+        <section id="organisation" class="subcontent">
             <img src="/theme/assets/img/rudolf_rocks_organisation.png" />
-            <p>
-            Test
-            <p>
+            <div class="row">
+                <div class="col-md-6">
+                    Die Planung des Straßenfestes ist fast abgeschlossen. Es
+                    werden aber noch immer Helfer*innen gesucht in verschiedenen Bereichen.
+                    Jede*r sei herzlich eingeladen sich an unseren regelmäßigen Treffen zu beteiligen,
+                    die zunächst jeden zweiten Mittwoch ab 19:30 Uhr auf dem Sonnendeck der
+                    Ottoterasse stattfinden.
+                </div>
+                <div class="col-md-6">
+                    <h4 >Milan e.V </h4>
+                        <span>
+                          <p class="ng-binding">Der Milan e.V arbeitet als gemeinnütziger Verein auf lokaler Ebene für die Förderung und Bereicherung des sozialen und kulturellen Lebens. Unser aktuelles Tätigkeitsgebiet ist Dresden mit dem Kernpunkt südliches Hechtviertel. Unsere Zielgruppe sind junge Erwachsene mit psychischen Störungen und in Krisensituationen, Angehörige sowie alle Bürger*innen, die sich ehrenamtlich engagieren wollen oder am Geschehen partizipieren wollen</p>
+                            <span class="morelink"><a href="http://www.milan-dd.de/de/">zum Milan e.V</a></span>
+                          </span>
+                </div>
+            </div>
         </section>
-        <section id="location" class="subcontent">
+        <section id="locations" class="subcontent">
             <img src="/theme/assets/img/rudolf_rocks_location.png" />
-            <p>
-                Test
-            </p>
+            <section data-ng-include="'/articles/views/map.html'" ></section>
         </section>
 
 
