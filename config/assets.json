@@ -5,7 +5,8 @@
           "bower_components/openlayers3.5/build/ol.css",
           "bower_components/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css",
           "bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
-          "bower_components/fontawesome/css/font-awesome.css"
+          "bower_components/fontawesome/css/font-awesome.css",
+          "https://fonts.googleapis.com/css?family=Lusitana"
       ]
     },
     "js": {

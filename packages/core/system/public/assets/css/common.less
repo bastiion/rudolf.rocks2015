@@ -85,7 +85,7 @@ body, html {
 }
 
 #top-header {
-    opacity: 0.7;
+    opacity: 0.9;
     position:fixed;
     top:0;
     left:0;
@@ -93,6 +93,9 @@ body, html {
     height:1622px;
     z-index: 11;
     background:url(/theme/assets/img/rudolf_rocks_background_top.png) no-repeat 0 0;
+}
+
+#top-border {
 }
 
 #content {
@@ -110,7 +113,7 @@ body, html {
     z-index: 20;
     position: absolute;
     top: 400px;
-    left: 1000px;
+    left: 900px;
     color: #FFFFFF;
 }
 
@@ -118,6 +121,7 @@ body, html {
     background-size: auto;
     background-repeat: no-repeat;
     font-size: 24pt;
+    font-family: 'Lusitana', serif;
 }
 
 .subcontent > img {
@@ -136,13 +140,15 @@ body, html {
 
     #top-border {
         position:fixed;
-        top:30;
-        left:0;
+        top: 40px;
+        left:40px;
         width:@page-widthpx;
         height:262px;
         z-index: 12;
         color: #FFFFFF;
-        font-size: 36pt;
         background-size: auto;
+        opacity: 0.7;
+        letter-spacing: 10px;
+        font-size: 26pt;
         /*    background:url(/theme/assets/img/rudolf_rocks_top_top_header.png) no-repeat 0 0;*/
     }
