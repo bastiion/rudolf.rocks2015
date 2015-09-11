@@ -43,6 +43,7 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
       }
     };
 
+
     $scope.initScroller = function() {
       var sc = skrollr.init({
         render: function(data) {

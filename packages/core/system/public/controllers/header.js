@@ -32,6 +32,8 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
 
     $scope.isCollapsed = false;
+    console.log($state.current);
+    $rootScope.displayH = 'block';//($state.current == 'newhome' ? 'none' : 'block');
 
     $rootScope.$on('loggedin', function() {
       queryMenu('main', defaultMainMenu);

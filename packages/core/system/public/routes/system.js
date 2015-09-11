@@ -56,12 +56,12 @@ angular.module('mean.system').config(['$meanStateProvider', '$urlRouterProvider'
     $meanStateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'system/views/index.html'
+        templateUrl: 'system/views/index2.html'
       });
     $meanStateProvider
         .state('newhome', {
           url: '/new',
-          templateUrl: 'system/views/index2.html'
+          templateUrl: 'system/views/index.html'
         });
 
     $meanStateProvider

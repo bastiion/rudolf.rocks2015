@@ -4,8 +4,6 @@
 </div>
     <div data-ng-if="selectedArticle" class="col-md-12">
 
-        <span>{{article.created | date:'medium'}}</span> /
-        <span>{{article.user.name}}</span>
         <h2>
             <a data-ng-href="/articles/{{article._id}}">{{article.title}}</a>
         <span data-ng-if="hasAuthorization(article)">

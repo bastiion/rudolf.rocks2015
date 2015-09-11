@@ -56,7 +56,11 @@ footer p {
 
 body, html {
     min-height: 100%;
+    background-color: black;
 }
+ .navbar-custom {
+     background-color: rgba(0,0,0,0.1);
+ }
 
 .main-page {
     min-height: 2000px;
@@ -68,12 +72,12 @@ body, html {
     top:0;
     left:0;
     width:@page-widthpx;
-    height:4252px;
+    height:6252px;
 }
 
 #background-base {
     z-index: 8;
-    background:url(/theme/assets/img/rudolf_rocks_background.jpg) no-repeat 0 0;
+    background:url(/theme/assets/img/rudolf_rocks_background.jpg) repeat-y 0 0;
 }
 #background-front {
     z-index: 9;
@@ -104,7 +108,6 @@ body, html {
     top: 250px;
     left: 0;
     width: @page-widthpx;
-    height: 4000px;
     color: #FFFFFF;
 
 }
@@ -120,7 +123,7 @@ body, html {
 .subcontent {
     background-size: auto;
     background-repeat: no-repeat;
-    font-size: 24pt;
+    font-size: 18pt;
     font-family: 'Lusitana', serif;
 }
 
