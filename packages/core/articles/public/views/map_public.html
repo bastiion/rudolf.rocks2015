@@ -1,0 +1,14 @@
+<section data-ng-controller="ArticlesController" data-ng-init="mapFind()">
+    <div class="row">
+    <div class="col-md-12">
+        <div id="map" class="map" />
+    </div>
+    <div class="articlecontentcontainer" data-ng-if="selectedArticle" class="col-md-12">
+
+        <h2>
+            {{article.title}}
+        </h2>
+        <div class="article-content" ng-bind-html="getContent(article)" />
+    </div>
+    </div>
+</section>
