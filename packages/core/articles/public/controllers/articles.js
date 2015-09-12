@@ -400,6 +400,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$sc
 
                     //,featureOverlay
                 ],
+                interactions: ol.interaction.defaults({mouseWheelZoom:false}),
                 target: 'map',
                 view: new ol.View({
                     center: rudolfstr,
