@@ -13,7 +13,7 @@ module.exports = {
   },
   hostname: 'http://localhost:3000',
   app: {
-    name: 'MEAN - A Modern Stack - Development'
+    name: 'Rudolf Rocks - Rudolfstraßenfest 19.09.2015'
   },
   strategies: {
       local: {
